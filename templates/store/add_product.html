@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'includes/navbar_2.html' %}
+<section class="section-content padding-y">
+       <div class="card mx-auto" style="max-width: 540px; margin-top:40px">
+              <article class="card-body">
+                     {%include 'includes/alerts.html' %}
+                     <header class="mb-4">
+                            <h4 class="card-title">Add New Product </h4>
+                     </header>
+                     <form action="{% url 'store:add_product' %}" method='POST' enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                   <div class="col form-group">
+                                          <label>Product Name: </label>
+                                          <input type="text" Required name="name" class="form-control">
+                                   </div>
+                                   <div class="col form-group">
+                                          <label>Slug:</label>
+                                          <input type="text" Required name="slug" class="form-control">
+                                   </div>
+                            </div>
+                            <div class="form-row">
+                                   <div class="col form-group">
+                                          <label>Price:</label>
+                                          <input type="number" Required name="price" class="form-control">
+                                   </div>
+                                   <div class="col form-group">
+                                          <label>In Stock:</label>
+                                          <input type="number" Required name="quantity" class="form-control">
+                                   </div>
+                            </div>
+                            <div class="form-row">
+                                   <div class="col form-group">
+                                          <label>Describe Product:</label>
+                                          <input type="text" name="describe" class="form-control">
+                                   </div>
+                            </div>
+                            <br>
+                            <div class="form-row">
+                                   <div class="col form-group">
+                                          <label>Product Picture:</label>
+                                          <input type="file" name="product_picture" class="form-control">
+                                   </div>
+                                   <div class="col form-group">
+                                          <label>Category: </label>
+                                          <select name="select_category" class="form-control">
+                                                 {% for cat in cat_list %}
+                                                        <option name="cat_name" >{{ cat }}</option>
+                                                 {% endfor %}
+                                          </select>
+                                   </div>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                   <button type="submit" class="btn btn-primary btn-block">Add Product</button>
+                            </div>
+                     </form>
+              </article>
+       </div>
+</section>
+{% endblock %}

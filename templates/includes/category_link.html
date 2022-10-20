@@ -1,0 +1,9 @@
+{% load static %}
+
+<aside class="col-md-3">
+       <nav class="list-group">
+              {% for a_category in cateogries %}
+                     <a class="list-group-item" href="#">{{ a_category.category_name }}</a>
+              {% endfor %}
+       </nav>
+</aside>

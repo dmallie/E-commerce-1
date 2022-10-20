@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'includes/navbar_2.html' %}
+<section class="section-content padding-y">
+       <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+       <article class="card-body">
+       {% include 'includes/alerts.html' %}
+       <header class="mb-4">
+              <h4 class="card-title">New Category</h4>
+       </header>
+       <form action="{% url 'store:create_category' %}" method='POST' enctype='multipart/form-data'>
+              {% csrf_token %}
+              <div class="form-row">
+                     <div class="col form-group">
+                            <label>Category Name: </label>
+                            <input type="text" Required name="category_name" class="form-control">
+                     </div>
+                     <div class="col form-group">
+                            <label>Slug: </label>
+                            <input type="text" Required name="slug_name" class="form-control">
+                     </div>
+              </div>
+              <div class="form-row">
+                     <div class="col form-group">
+                            <label>description</label>
+                            <input type="text" Required name="description" class="form-control"
+                                   style="height: 160px; width:380px">
+                            </div>
+              </div>
+              <div class="form-row">
+                     <div class="col form-group">
+                            <label>Category Image:</label>
+                            <input type="file" name="cat_image" class="form-control">
+                     </div>
+              </div>
+              <br>
+              <div class="form-group">
+                     <button type="submit" class="btn btn-primary btn-block"> Create Category  </button>
+              </div>
+       </form>
+       </article>
+       </div>
+</section>
+{% endblock %}

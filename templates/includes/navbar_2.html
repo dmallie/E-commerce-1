@@ -1,0 +1,36 @@
+<header class="section-header">
+       <section class="header-main border-bottom">
+              <div class="container">
+                     <div class="row align-items col-lg-3 col-md-12">
+                            <div class="widget-header mr-3">
+                                   {% if user.id is None %}
+                                   <div class="widget-header">
+                                          <p class="text" style="display:inline">
+                                                 Welcome Guest 
+                                          </p>
+                                          <a href="{% url 'accounts:login' %}" class="text"
+                                                 style="display:inline"> Sign In 
+                                          </a>
+                                          <span class="dark-transp"> | </span>
+                                          <a href="{% url 'accounts:signup' %}" class="text" style="display:inline">Sign Up</a>
+                                   </div>
+                                   {% else %}
+                                   <div class="widget-header">
+                                          <p class="text" style="display:inline">
+                                                 Welcome {{ user.first_name }}
+                                          </p>
+                                          <span class="dark-transp"> | </span>
+                                          <a href="{% url 'accounts:logout' %}">Logout </a>
+                                          <span class="dark-transp"> | </span>
+                                          <a href="{% url 'accounts:profile' %}">Create Profile </a>
+                                          
+                                          <a href="{% url 'store:create_category' %}"> Create Category </a>
+                                          <span class="dark-transp"> | </span>
+                                          <a href="{% url 'store:add_product' %}">Add Product </a>
+                                   </div>
+                                   {% endif %}
+                            </div>
+                     </div>
+              </div>
+       </section>
+</header>

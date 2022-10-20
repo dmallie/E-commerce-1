@@ -1,0 +1,22 @@
+<aside class="col-lg col-md-3 flex-lg-grow-0">
+       <nav class="nav-home-aside">
+              <a class="title-category" href="{% url 'store:all_products' %}">All Categories <i class="d-md-none icon fa fa-chevron-down"></i></a>
+              <ul class="menu-category">
+                     {% for category in category_links %}
+                            <li>
+                                   <a href="{{ category.get_url }}">
+                                          {{ category.category_name }}
+                                   </a>
+                            </li>
+                     {% endfor %}
+                     <li class="has-submenu"><a href="#">More items</a>
+                            <ul class="submenu">
+                                   <li><a href="#">Submenu name</a></li>
+                                   <li><a href="#">Great submenu</a></li>
+                                   <li><a href="#">Another menu</a></li>
+                                   <li><a href="#">Some others</a></li>
+                            </ul>
+                     </li>
+              </ul>
+       </nav>
+</aside> <!-- col.// -->

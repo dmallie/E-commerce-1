@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mx-auto" style="max-width: 520px; margin-top:40px;">
+<article class="card-body">
+<header class="mb-4">
+       <h4 class="card-title"> Create Profile </h4>
+</header>
+{% include 'includes/alerts.html' %}
+<form action="{% url 'accounts:profile' %}" method='POST' enctype="multipart/form-data">
+       {% csrf_token %}
+      
+
+              <div class="form-row">
+                     <div class="col form-group">
+                            <label>Address 1: </label>
+                            <input type="text" Required name="address_1">
+                     </div>
+                     <div class="col form-group">
+                            <label>Address 2: </label>
+                            <input type="text" Required name="address_2">
+                     </div>
+              </div>
+              <div class="form-row">
+                     <div class="col form-group">
+                            <label> Zip: </label>
+                            <input type="number" Required name="postal_code">
+                     </div>
+                     <div class="col form-group">
+                            <label>City: </label>
+                            <input type="text" Required name="city">
+                     </div>
+              </div>
+              <div class="form-row">
+                     <div class="col form-group col-md-6">
+                            <label>State:  </label>
+                            <input type="text" Required name="state">
+                     </div>
+                     <div>
+                            <label>Country: </label>
+                            <input type="text" Required name="country">
+                     </div>
+             
+                     
+                     <!--- 
+                            <div class="col form-group col-md-6">
+                                   
+                                   <select id="inputState" class="form-control">
+                                          <option>Choose ...</option>
+                                          <option>Finland</option>
+                                          <option>Sweden</option>
+                                          <option>Norway</option>
+                                          <option>Denmark</option>
+                                          <option>Russia</option>
+                                   </select>
+                            -->
+                
+              </div>
+
+       <!-- <div class="form-row">
+              <input type="file" name="upload" accept="userprofile/*"> 
+              {{ form.profile_picture }}
+              <br>
+       </div>-->
+       <div class="form-row">
+              <label for="" class="form-label">Profile Picture: </label>
+              <input type="file" Required name="image" class="form-control">
+              <br>
+              <br>
+       </div>
+
+       <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block">Register</button>
+       </div>
+       <div class="form-group">
+              <label class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input" checked="">
+                     <div class="custom-control-label">
+                            I agree with <a href="#">terms and conditions</a>
+                     </div>
+              </label>
+       </div>
+       
+</form>
+</article>
+</div>
+{% endblock %}

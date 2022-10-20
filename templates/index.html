@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+       {% include 'includes/sub_navbar.html' %}
+<div class="container">
+<section class="section-main padding-y">
+       <main class="card">
+              <div class="card-body">
+                     <div class="row">
+                            {% include 'includes/aside_index.html' %}
+                            {% include 'includes/slider_index.html' %}
+                            {% include 'includes/popular_category_index.html' %}
+                        
+                     </div>
+              </div>
+       </main>
+</section>
+<section class="padding-bottom">
+       <div class="card card-deal">
+              {% include 'includes/deal_deadline.html' %}
+              {% include 'includes/offers.html' %}
+       </div>
+</section>
+</div>
+{% endblock %}
