@@ -1,6 +1,6 @@
 from django import forms
 from category.models import Category
-from .models import Product 
+from .models import Product, Variation 
 
 class CategoryForm(forms.ModelForm):
        class Meta:
@@ -42,5 +42,13 @@ class NavbarForm(forms.ModelForm):
               fields = ["category_name",]
        def __init__(self, *args, **kwargs):
               super(NavbarForm, self).__init__(*args, **kwargs)
+
+class VariationForm(forms.ModelForm):
+       class Meta:
+              model = Variation
+              fields = ["product", "variation_category", "variation_value", "is_active"]
+
+       def __init__(self, *args, **kwargs):
+              super(VariationForm, self).__init__(*args, **kwargs)
               
               

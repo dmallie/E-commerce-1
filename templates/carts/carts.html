@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-content padding-y">
+       <div class="container">
+              <div class="row">
+                     {% include 'includes/sub_navbar.html' %}
+                     {% include 'includes/cart_item.html' %}
+                     <aside class="col-md-3">
+                            {% include 'includes/coupon.html' %}
+                            {% include 'includes/counter.html' %}
+                     </aside>
+                     {% comment %} {% include 'includes/delivery_estimate.html' %} {% endcomment %}
+              </div>
+       </div>
+</section>
+<section class="section-name border-top padding-y">
+       <div class="container">
+              {% include 'includes/payment_policy.html' %}
+       </div>
+</section>
+{% endblock %}

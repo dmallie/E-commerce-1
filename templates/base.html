@@ -54,8 +54,12 @@
        {% block content %}
        <!-- content -->
        {% endblock %}
+       {% block extrascripts %}
+
+       {% endblock %}
        <!-- footer -->
        {% include 'includes/footer.html' %}
+       <script src="{% static 'js/store.js' %}" type = "text/javascript"></script>
 </body>
 
 </html>

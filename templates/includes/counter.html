@@ -1,0 +1,35 @@
+{% load static %}
+<div class="card">
+       <div class="card-body">
+              <dl class="dlist-align">
+                     <dt>
+                            Total price:
+                     </dt>
+                     <dd class="text-right">
+                            USD {{ total_price}}
+                     </dd>
+              </dl>
+              <dl class="dlist-align">
+                     <dt>
+                            VAT Amount:
+                     </dt>
+                     <dd class="text-right">
+                            USD {{ vat_amount}}
+                     </dd>
+              </dl>
+              <dl class="dlist-align">
+                     <dt>
+                            Total:
+                     </dt>
+                     <dd class="text-right  h5">
+                            <strong>
+                                   ${{ total_price_vat }}
+                            </strong>
+                     </dd>
+              </dl>
+              <hr>
+              <p class="text-center mb-3">
+                     <img src="{% static 'images/misc/payments.png' %}" height="26">
+              </p>
+       </div> <!-- card-body.// -->
+</div>  <!-- card .// -->

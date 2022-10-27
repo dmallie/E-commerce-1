@@ -41,3 +41,5 @@ function deadLineTimer(){
 }
 
 setInterval(function() { deadLineTimer(); }, 1000);
+
+console.log("Abebe");

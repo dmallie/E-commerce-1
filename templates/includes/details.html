@@ -1,3 +1,4 @@
+{% load static %}
 <section class="section-content bg-white padding-y">
        <div class="container">
 <!-- ============================ ITEM DETAIL ======================== -->
@@ -32,117 +33,162 @@
                      </aside>
 {% comment %} Product Detail Description Section {% endcomment %}
                      <main class="col-md-6">
-                            <article class="product-info-aside">
-{% comment %} Product Title {% endcomment %}
-                                   <h2 class="title mt-3">
-                                          {{ product_detail.product_name }}
-                                   </h2>
-{% comment %} Stars Review and No of orders on this product {% endcomment %}
-                                   <div class="rating-wrap my-3">
-                                          <ul class="rating-stars">
-                                                 <li style="width:80%" class="stars-active">
-                                                        <i class="fa fa-star"></i> 
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i> 
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                 </li>
-                                                 <li>
-                                                        <i class="fa fa-star"></i> 
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i> 
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                 </li>
-                                          </ul>
-                                          <small class="label-rating text-muted">
-                                                 132 reviews
-                                          </small>
-                                          <small class="label-rating text-success"> 
-                                                 <i class="fa fa-clipboard-check"></i> 
-                                                 154 orders 
-                                          </small>
-                                   </div> <!-- rating-wrap.// -->
-{% comment %} Price Section {% endcomment %}
-                                   <div class="mb-3">
-                                          <var class="price h4">
-                                                 {{ product_detail.price }}
-                                          </var>
-                                          <span class="text-muted" id="vat">
-                                                 {{ price_vat  }} incl. VAT
-                                          </span>
-                                   </div> <!-- price-detail-wrap .// -->
-{% comment %} Product Description Section                {% endcomment %}
-                                   <p>
-                                          {{ product_detail.description }}
-                                   </p>
-{% comment %} Product Maker and other Details  {% endcomment %}
-                                   <dl class="row">
-                                          <dt class="col-sm-3">
-                                                 Manufacturer
-                                          </dt>
-                                          <dd class="col-sm-9">
-                                                 <a href="#">
-                                                        Great textile Ltd.
-                                                 </a>
-                                          </dd>
-                                          <dt class="col-sm-3">
-                                                 Article number
-                                          </dt>
-                                          <dd class="col-sm-9">
-                                                 596 065
-                                          </dd>
-                                          <dt class="col-sm-3">
-                                                 Guarantee
-                                          </dt>
-                                          <dd class="col-sm-9">
-                                                 2 year
-                                          </dd>
-                                          <dt class="col-sm-3">
-                                                 Delivery time
-                                          </dt>
-                                          <dd class="col-sm-9">
-                                                 3-4 days
-                                          </dd>
-                                          <dt class="col-sm-3">
-                                                 Availabilty
-                                          </dt>
-                                          <dd class="col-sm-9">
-                                                 in Stock
-                                          </dd>
-                                   </dl>
-                                   <div class="form-row  mt-4">
-                                          <div class="form-group col-md flex-grow-0">
-                                                 <div class="input-group mb-3 input-spinner">
-                                                        <div class="input-group-prepend">
-                                                               <button class="btn btn-light" type="button" id="button-plus"> 
-                                                                      + 
-                                                               </button>
-                                                        </div>
-                                                        <input type="text" class="form-control" value="1">
-                                                        <div class="input-group-append">
-                                                               <button class="btn btn-light" type="button" id="button-minus"> 
-                                                                      &minus; 
-                                                               </button>
-                                                        </div>
+                            <form action="{% url 'carts:add_cart' product_detail.id %}" method="POST">
+                                   {% csrf_token %}
+                                   <article class="product-info-aside">
+       {% comment %} Product Title {% endcomment %}
+                                          <h2 class="title mt-3">
+                                                 {{ product_detail.product_name }}
+                                          </h2>
+       {% comment %} Stars Review and No of orders on this product {% endcomment %}
+                                          <div class="rating-wrap my-3">
+                                                 <ul class="rating-stars">
+                                                        <li style="width:80%" class="stars-active">
+                                                               <i class="fa fa-star"></i> 
+                                                               <i class="fa fa-star"></i>
+                                                               <i class="fa fa-star"></i> 
+                                                               <i class="fa fa-star"></i>
+                                                               <i class="fa fa-star"></i>
+                                                        </li>
+                                                        <li>
+                                                               <i class="fa fa-star"></i> 
+                                                               <i class="fa fa-star"></i>
+                                                               <i class="fa fa-star"></i> 
+                                                               <i class="fa fa-star"></i>
+                                                               <i class="fa fa-star"></i>
+                                                        </li>
+                                                 </ul>
+                                                 <small class="label-rating text-muted">
+                                                        132 reviews
+                                                 </small>
+                                                 <small class="label-rating text-success"> 
+                                                        <i class="fa fa-clipboard-check"></i> 
+                                                        154 orders 
+                                                 </small>
+                                          </div> <!-- rating-wrap.// -->
+       {% comment %} Price Section {% endcomment %}
+                                          <div class="mb-3">
+                                                 <var class="price h4">
+                                                        {{ product_detail.price }}
+                                                 </var>
+                                                 <span class="text-muted" id="vat">
+                                                        {{ price_vat  }} incl. VAT
+                                                 </span>
+                                          </div> <!-- price-detail-wrap .// -->
+       {% comment %} Product Description Section                {% endcomment %}
+                                          <p>
+                                                 {{ product_detail.description }}
+                                          </p>
+       {% comment %} Product Maker and other Details  {% endcomment %}
+                                          <dl class="row">
+                                                 <dt class="col-sm-3">
+                                                        Manufacturer
+                                                 </dt>
+                                                 <dd class="col-sm-9">
+                                                        <a href="#">
+                                                               Great textile Ltd.
+                                                        </a>
+                                                 </dd>
+                                                 <dt class="col-sm-3">
+                                                        Article number
+                                                 </dt>
+                                                 <dd class="col-sm-9">
+                                                        596 065
+                                                 </dd>
+                                                 <dt class="col-sm-3">
+                                                        Guarantee
+                                                 </dt>
+                                                 <dd class="col-sm-9">
+                                                        2 year
+                                                 </dd>
+                                                 <dt class="col-sm-3">
+                                                        Delivery time
+                                                 </dt>
+                                                 <dd class="col-sm-9">
+                                                        3-4 days
+                                                 </dd>
+                                                 <dt class="col-sm-3">
+                                                        Availabilty
+                                                 </dt>
+                                                 <dd class="col-sm-9">
+                                                        {{ product_detail.stock }}
+                                                 </dd>
+                                          </dl>
+                                          <div class="form-row">
+                                                 
+                                                 <div class="item-option-select col form-group">
+                                                        <h6>Choose Color</h6>
+                                                        <select name="color" class="form-control" required>
+                                                               <option value="" disabled selected>Select Color</option>
+                                                               {% for variation in product_detail.variation_set.colors %}
+                                                                      <option value="{{variation.variation_value}}" >
+                                                                             {{ variation.variation_value}}
+                                                                      </option>
+                                                               {% endfor %}
+                                                        </select>
                                                  </div>
-                                          </div> <!-- col.// -->
-                                   <div class="form-group col-md">
-                                          <a href="#"  class="btn  btn-primary">
-                                                 <i class="fas fa-shopping-cart"></i> 
-                                                 <span class="text">
-                                                        Add to cart
-                                                 </span>
-                                          </a>
-                                          <a href="#" class="btn btn-light">
-                                                 <i class="fas fa-envelope"></i> 
-                                                 <span class="text">
-                                                        Contact supplier
-                                                 </span>
-                                          </a>
-                                   </div> <!-- col.// -->
-                                   {% comment %} </div> <!-- row.// --> {% endcomment %}
-                            </article> <!-- product-info-aside .// -->
+                                                 <div class="item-option-select col form-group">
+                                                        <h6>Choose Size</h6>
+                                                        <select name="size" class="form-control" required>
+                                                               <option value="" disabled selected>Select Size</option>
+                                                               {% for variation in product_detail.variation_set.sizes %}
+                                                                      <option value="{{variation.variation_value}}" >
+                                                                             {{ variation.variation_value}}
+                                                                      </option>
+                                                               {% endfor %}
+                                                        </select>
+                                                 </div>
+                                          </div>
+                                          <div class="form-row  mt-4">
+                                                 <div class="form-group col-md flex-grow-0">
+                                                        <div class="input-group mb-3 input-spinner">
+                                                               <div class="input-group-prepend">
+                                                                      <button class="btn btn-light" type="button" id="button-minus"> 
+                                                                             &minus; 
+                                                                      </button>
+                                                               </div>
+                                                               <input type="text" class="form-control" value="1" id="quantity" name="quantity_widget">
+                                                               <div class="input-group-append">
+                                                                     
+                                                                      <button class="btn btn-light" type="button" id="button-plus"> 
+                                                                             + 
+                                                                      </button>
+                                                               </div>
+                                                        </div>
+                                                 </div> <!-- col.// -->
+                                          
+                                                 <div class="form-group col-md">
+                                                        {% comment %} {% if  is_item_in_cart  %}
+                                                               <a href="{% url 'store:all_products' %}" class="btn btn-success">
+                                                                      <i class="fas fa-shopping-cart" ></i> 
+                                                                      <span class="text">
+                                                                             Item is in the cart
+                                                                      </span>
+                                                               </a> {% endcomment %}
+                                                               {% comment %} <button type='submit' class="btn  btn-success">
+                                                                      <i class="fas fa-shopping-cart"></i> 
+                                                                      <span class="text">
+                                                                             Item is in the cart
+                                                                      </span>
+                                                               </button> {% endcomment %}
+                                                        {% comment %} {% else %} {% endcomment %}
+                                                        <button type='submit' class="btn  btn-primary">
+                                                               <i class="fas fa-shopping-cart"></i> 
+                                                               <span class="text">
+                                                                      Add to cart
+                                                               </span>
+                                                        </button>
+                                                        {% comment %} {% endif %} {% endcomment %}
+                                                        <a href="#" class="btn btn-light">
+                                                               <i class="fas fa-envelope"></i> 
+                                                               <span class="text">
+                                                                      Contact supplier
+                                                               </span>
+                                                        </a>
+                                                 </div> <!-- col.// -->
+                                          </div> <!-- row.// -->
+                                   </article> <!-- product-info-aside .// -->
+                            </form>
                      </main> <!-- col.// -->
               </div> <!-- row.// -->
               
@@ -151,4 +197,5 @@
               
        </div> <!-- container .//  -->
 </section>
-              
+{% comment %} <script src="{% static 'js/store.js' %}" type="text/javascript"></script> {% endcomment %}
+{% comment %} <script src="{% static 'js/math_operations.js' %}" type = "text/javascript"></script> {% endcomment %}

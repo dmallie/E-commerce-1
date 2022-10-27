@@ -1,6 +1,6 @@
 <div class="row">
        {% for product in products %}
-              <div class="col-md-3">
+              <div class="col-md-4">
                      <figure class="card card-product-grid">
                             <div class="img-wrap">
                                    <a href="{{ product.get_url }}">
@@ -8,16 +8,18 @@
                                    </a>
                             </div>
                             <figcaption class="info-wrap">
-                                   <a href="{{ product.get_url }}" class="title mb-2">
-                                          {{ product.product_name }}
-                                   </a>
-                                   <div class="price-wrap">
-                                          <span class="price">
-                                                 ${{ product.price }}
-                                          </span>
-                                          <small class="text-muted">
-                                                 /per item 
-                                          </small>
+                                   <div class="fix-height">
+                                          <a href="{{ product.get_url }}" class="title">
+                                                 {{ product.product_name }}
+                                          </a>
+                                          <div class="price-wrap mt-2">
+                                                 <span class="price">
+                                                        ${{ product.price }}
+                                                 </span>
+                                                 <small class="text-muted">
+                                                        /per item 
+                                                 </small>
+                                          </div>
                                    </div>
                                    <hr>
                                    <p class="mb-3">
