@@ -18,6 +18,14 @@ from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.core.files.storage import FileSystemStorage
+#
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMessage
+
 # Create your views here.
 def register(request):
 
@@ -36,14 +44,48 @@ def register(request):
 # After passing the validation test we then create a user account in the database   
                      user = Account.objects.create_user(first_name, last_name, email, phone_number, password)
 # Then save the user object
-                     user.save()
-                     return redirect('accounts:login')
+                     # user.save()
+# Verify the User through email verification method
+                     verification_context = {
+                            'domain': get_current_site(request),
+                            'user': user,
+                            'token': default_token_generator.make_token(user),
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                     }
+                     print("verification_context: ", verification_context)
+# prepare the messae
+                     message = render_to_string('accounts/account_verification_email.html', verification_context)
+# get the subject
+                     subject = 'using the link below please activate your account'
+# the destination address of the email
+                     to_email = email
+# prepare the verification email 
+                     verification_email = EmailMessage(subject, message, to = [to_email])
+# send the verification email
+                     verification_email.send()
+
+                     return redirect('/accounts/login/?command=verification&email='+email)
        else:
               form = RegistrationForm()
        context = {
               'form':form,
        }
        return render(request, 'accounts/register.html', context)
+# This will activate the user account
+def activate(request, uidb64, token):
+       try:
+              uid = urlsafe_base64_decode(uidb64).decode()
+              user = Account._default_manager.get(pk=uid)
+       except (TypeError, ValueError, OverflowError, Account.DoesNotExist):
+              user = None
+       if user is not None and default_token_generator.check_token(user, token):
+              user.is_active = True 
+              user.save()
+              messages.success(request, 'Congratulations! Your accout is activated.')
+              return redirect('accounts:login')
+       else:
+              message.error(request, 'Activation link has expired')
+              return redirect('accounts:register')
 
 # Login page is managed by this function
 def login(request):
@@ -64,6 +106,86 @@ def login(request):
               else:
                      messages.error(request, 'Invalid login credentials')
        return render(request, 'accounts/login.html')
+# To display dashboard page
+@login_required(login_url='accounts:login')
+def dashboard(request):
+       pass
+
+def forgot_password(request):
+       if request.method == 'POST':
+              email = request.POST.get('email')
+# check whether the email exists in our database
+              if Account.objects.filter(email=email).exists():
+# get user object from database                     
+                     user = Account.objects.get(email__iexact = email)
+                     # user_id = Account.objects.filter(email = user_email).values_list('id')[0][0]
+                     # print('user_id: ', user_id)
+                     # user = Account.objects.get(pk = user_id)
+                     # print("user: ", user)
+# prepare information necessary to send password reset email
+                     subject = 'Link to reset your password'
+                     to_email = email 
+                     message_content = {
+                            'domain': get_current_site(request),
+                            'user' : user,
+                            'token' : default_token_generator.make_token(user),
+                            'uid' : urlsafe_base64_encode(force_bytes(user.pk)),
+                     }
+                     message = render_to_string('accounts/password_resetting.html', message_content) 
+                     email_message = EmailMessage(subject, message, to=[to_email])
+                     email_message.send()
+
+                     messages.success(request, 'Link to reset the password has been sent to ur email')
+                     return redirect('accounts:login')
+              else:
+                     messages.error(request, 'Email address is not in our database')
+                     return redirect('accounts:forgot_password')
+       return render(request, 'accounts/forgot_password.html')
+##########################################################################################
+##### validatet the resetpassword link #####################
+def validate_reset_link(request, uidb64, token):
+       try:
+# decode uidb64 to uid
+              uid = urlsafe_base64_decode(uidb64).decode()
+              print("uid: ", uid)
+# get user object using uid 
+              # user = Account._default_manager.get(pk = uid)
+              user = Account.objects.get(pk = uid)
+              print("user: ", user)
+# if the above doesn't work and the following error happends then user is None
+       except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+              user = None
+# if user is not None and if the token matches that means link is valid and redirect page to reset password page
+       print("token boolean value: ", default_token_generator.check_token(user, token))
+       if user is not None and default_token_generator.check_token(user, token):
+              request.session['uid'] = uid     
+              messages.success(request, 'Please reset your password')
+              return redirect('accounts:reset_password')
+       else:
+# The link is invalid prompt an error message abotu the invalidity of the link and go to login page 
+              messages.error(request, 'This link has been expired. Please request a new link.')
+              return redirect('accounts:login')
+
+############################################################################################
+######### Reset Password  ##################################################################
+def reset_password(request):
+       if request.method == 'POST':
+              password_1 = request.POST.get('password_1')
+              password_2 = request.POST.get('password_2')
+
+              if password_1 == password_2:
+                     uid = request.session.get('uid')
+                     user = Account.objects.get(pk = uid)
+                     user.set_password(password_1)
+                     user.save()
+                     messages.success(request, 'You successfully has reset your password')
+                     return redirect('accounts:login')
+              else:
+                     messages.error(request, 'Passwords do not match, Please retype again')
+                     return redirect('accounts:reset_password')
+       return render(request, 'accounts/reset_password.html')
+
+
 @login_required(login_url='accounts:login')
 def logout(request):
        auth.logout(request)

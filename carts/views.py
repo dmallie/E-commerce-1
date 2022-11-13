@@ -17,9 +17,18 @@ def _cart_id(request):
 # adds items to the cart object
 def add_cart(request, product_id):
 # Get the product 
+       # Get Cart object       
+              
+############### STEP 1 ################################################################
        if request.method == "POST":
-              product_variation = []
-# get product object from its product id
+              try:
+                     cart = Cart.objects.get(cart_id = _cart_id(request))
+              except Cart.DoesNotExist:
+                     cart = Cart.objects.create(cart_id = _cart_id(request))
+       # Save Cart object
+              cart.save()
+              product_variations = []
+# get product object using its product id
               product = Product.objects.get(id=product_id)
 # iterate through reques.POST objects
 # These objects include, session_key and various fields from the form of html
@@ -29,39 +38,90 @@ def add_cart(request, product_id):
 # value is the value of the field
                      value = request.POST[key]
                      try: 
-# we can extract the variation from table by matching the three parameters
-                            
+# we can extract the variation from table by matching the three parameters                            
                             if key == 'color' or key == 'size':
                                    variation = Variation.objects.get(product = product,
                                                                variation_category=key,
                                                                variation_value=value)
                                    print("variation_id: ", variation.id)
-                                   product_variation.append(variation)
+                                   product_variations.append(variation)
                      except:
                             pass
-                     print("product_variation", product_variation)
               quantity = request.POST.get('quantity_widget')
 # Check if this particular cart_item exists object. If true then 
+############### STEP 2 ################################################################
               is_cart_item_exists = CartItem.objects.filter(user = request.user,
                                                                product = product).exists()
               print("is_cart_item_exists", is_cart_item_exists)
+# if is_cart_item_exists is True that means we have similar product in cart_items so we'll
+# check the variations if the variations match then we will only incrment the quantity otherwise 
+# we'll treat it as a new cart_item
               if is_cart_item_exists:
 # identify and get cart_item using the product object and user object
-                     cart_item = CartItem.objects.filter(user=request.user,
+                     cart_items = CartItem.objects.filter(user=request.user,
                                                         product=product)
-# initialise empty lists of ex_var_list and id list
-                     ex_var_list = []
-                     id = []
-# instantiate loop which iterate through each cart_item objects
-                     for item in cart_item:
+                     print("no. similar product items in cart_items: ", cart_items.count())
+# This list all the variation properties of cartItems in the cart
+                     cart_item_variations = []     # holds the variations of the product
+                     variations_id = []              # this holds the id of variations table
+############### STEP 3 ################################################################
+# instantiate loop which iterate through each fields of cart_item object
+                     for item in cart_items:
 # select one cart_item and extract all the variations associated with that item
-                            existing_variations = item.variations.all()
+                            variations = item.variations.all()
 # in the ex_var_list append all the extracted variations
-                            ex_var_list.append(existing_variations)
+                            cart_item_variations.append(list(variations))    # existing_variations are query set so need to change to list
 # finally on the id list append the cart_item id
-                            id.append(item.id)
-# for visualization purposes we print and see what existing_variations are
-                     print("ex_var_list: ", ex_var_list)
+                            variations_id.append(item.id)
+                     print("cart_item_variations: ", cart_item_variations)
+                     print("product_variations: ", product_variations)
+############### STEP 4 ################################################################
+# Then we need to compare each values of ex_var_lsit with that of variations of the product we have
+                     if product_variations in cart_item_variations:
+                            print(" product is in the cart")
+                            index  = cart_item_variations.index(product_variations)
+                            id     = variations_id[index] # variations id
+# using the variations id and product we can get the cartItem
+                            item   = CartItem.objects.get( id = id,
+                                                               product = product) 
+# adjust the quantity value by addin the quantity amount fetched from html
+                            item.quantity += int(quantity)
+# save the item with new quantity value
+                            item.save()
+                     else:
+# create cart item object
+                            cart_item = CartItem.objects.create(
+                                                        user = request.user,
+                                                        product = product,
+                                                        quantity = int(quantity),
+                                                        cart = cart)
+# attach product_variation to this new cart_item
+                            cart_item.variations.clear()
+                            cart_item.variations.add(*product_variations)
+# save cart_item object on db
+                            cart_item.save()
+# If is_cart_item_exists returns False, That is products in the CartItem collection doesn't match the product
+              else:
+# create cart_item object
+                     cart_item = CartItem.objects.create(product  = product,
+                                                               user = request.user,
+                                                               quantity = int(quantity),
+                                                               cart = cart)
+                     if len(product_variations) > 0:
+                            cart_item.variations.clear()
+                            cart_item.variations.add(*product_variations)
+                     cart_item.save()
+######################### Just to check cart_item object #########################
+                     print("cart_item.user:", cart_item.user)
+                     print("cart_item.product: ", cart_item.product)
+                     print("cart_item.quantity: ", cart_item.quantity)
+                     for v in cart_item.variations.all():
+                            print("       variation_category: ", v.variation_category)
+                            print("       variation_value: ", v.variation_value)
+                     
+
+              return redirect('carts:cart')
+              print(" if the user is not authenticated")
 # GET variations of the product in color and size
        # Get Cart object       
               try:

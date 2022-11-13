@@ -21,7 +21,7 @@ class AccountManager(BaseUserManager):
               user.set_password(password)
 # save the values in the database
 # Set is_active for the user to True otherwise the user can never log in
-              user.is_active = True
+              # user.is_active = True
               user.save(using=self._db)
 
               return user
@@ -33,7 +33,7 @@ class AccountManager(BaseUserManager):
               user.is_admin        = True 
               user.is_active       = True 
               user.is_staff        = True 
-              user.is_staffadmin   = True
+              user.is_superadmin   = True
 # We then save on the database
               user.save(using=self._db)
               return user
