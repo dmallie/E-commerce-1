@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}    
+<section class="section-content padding-y">
+       <div class="container">
+              <div class="row">
+                     {% include 'includes/sub_navbar.html' %}
+                     {% include 'includes/cart_item_2.html' %}
+                     {% include 'includes/counter_2.html' %}
+                     {% comment %} {{ form.render }} {% endcomment %}
+              </div>
+       </div>
+</section>
+<section class="section-name border-top padding-y">
+       <div class="container">
+              {% include 'includes/payment_policy.html' %}
+       </div>
+</section>
+
+       
+{% endblock %}

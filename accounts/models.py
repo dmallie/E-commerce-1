@@ -85,9 +85,9 @@ class UserProfile(models.Model):
        country       = models.CharField(max_length=50)
 
        def __str__(self):
-              return self.user
+              return self.user.email
 
        def full_address(self):
-              address_ = f'{self.address_1} {self.address_2} {self.postal_code}'
-              address__ = f'{self.city} {self.state} {self.country}'
-              return address_ + address__ 
+              address_ = f'{self.address_1} {self.address_2} {self.postal_code}\n'
+              # address__ = f'{self.city} {self.state} {self.country}'
+              return address_ 

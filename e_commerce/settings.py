@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-n!rbkj!f9ihj!m(al#utz1!!7cvxoa1a$b)gvsboodk8_9tg)o
 # DEBUG = True
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['6d33-86-50-75-164.eu.ngrok.io','localhost', '127.0.0.1', 'testserver']
 
 
 # Application definition
@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'paypal.standard.ipn',
     'accounts',
     'category',
     'store',
     'carts',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -160,4 +162,6 @@ DEFAULT_FROM_EMAIL  = 'mallie.dagmawi@gmail.com'
 SERVER_EMAIL        = 'mallie.dagmawi@gmail.com'
 EMAIL_HOST_PASSWORD = 'lyhy umpx mjjr ffdf'
 
-# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# PAYPAL configuration
+PAYPAL_RECEIVER_EMAIL = 'lafforie@gmail.com'
+PAYPAL_TEST = True

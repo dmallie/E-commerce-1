@@ -1,0 +1,80 @@
+<main class="col-md-9">
+       <div class="card">
+              <table class="table table-borderless table-shopping-cart">
+                     <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                   <th scope="col">Product</th>
+                                   <th scope="col" width="120">Quantity</th>
+                                   <th scope="col" width="120">Price</th>
+                                   <th scope="col" width="200" class="text-right"></th>
+                            </tr>
+                     </thead>
+                     <tbody>
+                            {% for an_item in cart_items %}
+                            <tr>
+                                   <td>
+                                          <figure class="itemside">
+                                                 <div class="aside">
+                                                        <img src={{ an_item.product.image.url }} class="img-sm">
+                                                        </div>
+                                                 <figcaption class="info">
+                                                        <a href="{{ an_item.product.get_url }}">
+                                                               {{ an_item.product.product_name }}
+                                                        </a>
+                                                        <p class="text-muted small">
+                                                               {% if an_item.variations.all %}
+                                                                      {% for field in an_item.variations.all %}
+                                                                             {{ field.variation_category | capfirst}} : 
+                                                                             {{ field.variation_value | capfirst}}
+                                                                             <span class="dark-transp"> | </span>
+                                                                      {% endfor %}
+                                                               <br>
+                                                               Brand: Gucci
+                                                               {% endif %}
+                                                        </p>
+                                                 </figcaption>
+                                          </figure>
+                                   </td>
+                                   <td>
+                                          <div class="col">
+                                                 <div class="input-group input-spinner">
+                                                        <div class="input-group-prepend">
+                                                               <a href="{% url 'carts:subtract_item' an_item.product.id an_item.id %}" class="btn btn-light" type="button" name="button-minus">
+                                                                      <i class="fa fa-minus"></i>
+                                                               </a>
+                                                        </div>
+                                                        <input type="text" class="form-control" value="{{ an_item.quantity }}" name="quantity">
+                                                        <div class="input-group-prepend">
+                                                               <a href="{% url 'carts:add_item' an_item.product.id an_item.id %}" class="btn btn-light" type="button" name="button-plus">
+                                                                      <i class="fa fa-plus"></i>
+                                                               </a>
+                                                        </div>
+                                                 </div>
+                                          </div>
+                                   </td>
+                                   <td>
+                                          <div class="price-wrap">
+                                                 <var class="price" id="price">
+                                                        {{ an_item.sub_total }} 
+                                                 </var>
+                                                 <small class="text-muted" id="vat">
+                                                        {{ an_item.with_vat }}  Inc VAT
+                                                 </small>
+                                          </div>
+                                   </td>
+                                   <td class="text-right">
+                                          <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> 
+                                                 <i class="fa fa-heart"></i>
+                                          </a> 
+                                          <a href="{% url 'carts:delete_cart_item' an_item.product.id an_item.id %}" class="btn btn-danger" id="remove"> 
+                                                 Remove
+                                          </a>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                     </tbody>
+              </table>              
+       </div>
+</main>
+
+                                          

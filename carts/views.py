@@ -264,6 +264,8 @@ def remove_from_cart(request, product_id, cart_item_id):
 # cart method render the cart page
 def cart(request, total=0, quantity=0, cart_items=None):
 # Try to get cart objects and calculate the total bill
+       grand_total = 0.0
+       vat_amount = 0.0
        try:
               vat = 0.24
               price = 0
